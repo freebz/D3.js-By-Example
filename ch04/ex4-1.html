@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 4.1">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var data = [55, 44, 30, 23, 17, 14, 16, 25, 41, 61, 85,
+		  101, 95, 105, 114, 150, 180, 210, 125, 100, 71,
+		  75, 72, 67];
+
+      var barWidth = 15, barPadding = 3;
+      var maxValue = d3.max(data);
+
+      var barGroup = d3.select('body')
+		       .append('svg')
+		       .attr({ width: 1000, height: 250 })
+		       .append('g');
+
+      function xloc(d, i) { return i * (barWidth + barPadding); }
+      function yloc(d) { return maxValue - d; }
+      function translator(d, i) {
+	return "translate(" + xloc(d, i) + "," + yloc(d) + ")";
+      }
+
+      barGroup.selectAll("rect")
+	      .data(data)
+	      .enter()
+	      .append('rect')
+	      .attr({
+		fill: 'steelblue',
+		transform: translator,
+		width: barWidth,
+		height: function (d) { return d; }
+	      });      
+    </script>
+  </body>
+</html>

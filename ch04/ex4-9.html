@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 4.9">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var data = [55, 44, 30, 23, 17, 14, 16, 25, 41, 61, 85,
+		  101, 95, 105, 114, 150, 180, 210, 125, 100, 71,
+		  75, 72, 67];
+
+      var barWidth = 15, barPadding = 3;
+      var maxValue = d3.max(data);
+
+      var graphWidth = data.length * (barWidth + barPadding) - barPadding;
+      var margin = { top: 10, right: 10, bottom: 10, left: 50 };
+
+      var totalWidth = graphWidth + margin.left + margin.right;
+      var totalHeight = maxValue + margin.top + margin.bottom;
+
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({ width: totalWidth, height: totalHeight });
+
+      var scale = d3.scale
+		    .linear()
+		    .domain([maxValue, 0])
+		    .range([0, maxValue]);
+
+      var axisGroup = svg.append('g');
+      var axis = d3.svg.axis()
+		   .orient('left')
+		   .scale(scale);      
+      var axisNodes = axisGroup.call(axis);
+      var domain = axisNodes.selectAll('.domain');
+      domain.attr({
+	fill: 'none',
+	'stroke-width': 1,
+	stroke: 'black'
+      });
+      var ticks = axisNodes.selectAll('.tick line');
+      ticks.attr({
+	fill: 'none',
+	'stroke-width': 1,
+	stroke: 'black'
+      });
+
+      axisGroup.attr('transform', 'translate(50,0)');
+      
+    </script>
+  </body>
+</html>
