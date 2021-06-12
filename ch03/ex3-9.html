@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 3.9">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+
+    <style>
+      svg rect { fill: red; }
+      svg rect#willBeGreen { fill: green; }
+    </style>
+    
+    <svg width="720" height="120">
+      <rect x="10" y="10" width="50" height="50" />
+      <rect x="70" y="10" width="50" height="50" id="willBeGreen" />
+      <rect x="130" y="10" width="50" height="50" style="fill:blue" />
+    </svg>
+  </body>
+</html>
