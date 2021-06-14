@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 5.5">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>      
+      var url = "walking_dead_s5.csv";
+      d3.csv(url, function (error, data) {
+	var mappedAndConverted = data.map(function(d) {
+	  return {
+	    Episode: +d.Episode,
+	    USViewers: +d.USViewers,
+	    Title: d.Title
+	  };
+	});
+
+	var viewership = mappedAndConverted.map(function (d) {
+	  return d.USViewers;
+	});
+	var minViewership = d3.min(viewership);
+	var maxViewership = d3.max(viewership);
+
+	var minBarHeight = 100, maxBarHeight = 400;
+
+	var yScale = d3.scale
+		       .linear()
+		       .domain([minViewership, maxViewership])
+		       .range([minBarHeight, maxBarHeight]);
+
+	console.log(minViewership + " -> " + yScale(minViewership));
+	console.log(maxViewership + " -> " + yScale(maxViewership));
+      });
+      console.log("Data in D3.js is loaded asynchronously");
+    </script>
+  </body>
+</html>

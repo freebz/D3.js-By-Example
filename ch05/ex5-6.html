@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 5.6">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>      
+      var colorScale = d3.scale.ordinal()
+			 .domain(['red', 'green', 'blue'])
+			 .range(['#ff0000', '#00ff00', '#0000ff']);
+      
+      console.log(colorScale('red'),
+		  colorScale('green'),
+		  colorScale('blue'));
+    </script>
+  </body>
+</html>

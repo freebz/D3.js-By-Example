@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 5.2">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var url = "walking_dead_s5.tsv";
+      d3.tsv(url, function (error, data) {
+	console.log(data[0]);
+      });
+      console.log("Data in D3.js is loaded asynchronously");
+    </script>
+  </body>
+</html>

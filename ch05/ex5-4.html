@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 5.4">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>      
+      var url = "walking_dead_s5.csv";
+      d3.csv(url, function (error, data) {
+	var mappedAndConverted = data.map(function(d) {
+	  return {
+	    Episode: +d.Episode,
+	    USViewers: +d.USViewers,
+	    Title: d.Title
+	  };
+	});
+	console.log(mappedAndConverted);
+      });
+      console.log("Data in D3.js is loaded asynchronously");
+    </script>
+  </body>
+</html>
