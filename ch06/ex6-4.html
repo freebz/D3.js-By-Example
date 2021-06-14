@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 6.4">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var url = "fert_pop_exp.csv";
+      d3.csv(url, function (error, rawData) {
+
+	var data = rawData.map(function(d) {
+	  return {
+	    CountryCode: d.CountryCode,
+	    CountryName: d.CountryName,
+	    LifeExp: +d.LifeExp,
+	    FertRate: +d.FertRate,
+	    Population: +d.Population,
+	    Region: d.Region
+	  }
+	});
+
+	var minBubbleSize = 5, maxBubbleSize = 50;
+	var margin = { left: maxBubbleSize, top: maxBubbleSize,
+		       bottom: maxBubbleSize, right: maxBubbleSize
+	};
+	var axisPadding = 10;
+	var graphWidth = 500, graphHeight = 400;
+	var totalWidth = graphWidth + margin.left + margin.right;
+	var totalHeight = graphHeight + margin.top + margin.bottom;
+	
+	
+	var lifeExpectancy = data.map(function(d) { return d.LifeExp; });
+	var fertilityRate = data.map(function(d) { return d.FertRate; });
+	var population = data.map(function(d) { return d.Population; });
+	var regions = data.map(function(d) { return d.Region; });
+
+	var xScale = d3.scale.linear()
+		       .domain([d3.min(lifeExpectancy), d3.max(lifeExpectancy)])
+		       .range([0, graphWidth]);
+
+	var yScale = d3.scale.linear()
+		       .domain([d3.max(fertilityRate), 0])
+		       .range([0, graphHeight]);
+
+	var popScale = d3.scale.linear()
+			 .domain(d3.extent(population))
+			 .range([minBubbleSize, maxBubbleSize]);
+
+
+	var uniqueRegions = d3.set(regions).values();
+	var regionColorMap = d3.scale.ordinal()
+			       .domain(uniqueRegions)
+			       .range(d3.scale.category10().range());
+
+
+	var svg = d3.select("body").append('svg')
+		    .attr('width', totalWidth)
+		    .attr('height', totalHeight);
+
+	
+	var yAxis = d3.svg.axis().scale(yScale).orient('left');
+	var yAxisNodes = svg.append('g')
+			    .attr('transform', 'translate(' +
+						(margin.left - axisPadding) + ',' + margin.top + ')')
+			    .call(yAxis);
+	styleAxisNodes(yAxisNodes);
+
+	var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
+	var xAxisNodes = svg.append('g')
+			    .attr('transform', 'translate(' + margin.left + ',' +
+						(totalHeight - margin.bottom + axisPadding) + ')')
+			    .call(xAxis);
+	styleAxisNodes(xAxisNodes);
+
+
+	svg.append('g')
+	   .attr('transform', 'translate(' + margin.left + ',' +
+			      margin.top + ')')
+	   .selectAll('circle')
+	   .data(data)
+	   .enter()
+	   .append('circle')
+	   .each(function(d) {
+	     d3.select(this).attr({
+	       cx: xScale(d.LifeExp),
+	       cy: yScale(d.FertRate),
+	       r: popScale(d.Population),
+	       fill: regionColorMap(d.Region),
+	       stroke: regionColorMap(d.Region),
+	       'fill-opacity': 0.5
+	     });
+	   });
+
+	/*
+
+	
+	var xExtents = d3.extent(data, function(d) { return d.X; });
+	var yExtents = d3.extent(data, function(d) { return d.Y; });
+
+	var maxExtent = d3.max(
+	  xExtents.concat(yExtents),
+	  function(d) { return Math.abs(d);
+	  });
+
+	var graphWidth = 400, graphHeight = 400;
+	var radius = 5;
+	var margins = { left: 50, top: 50, right: 10, bottom: 50 }
+	var axisPadding = 3;
+
+	var totalWidth = graphWidth + margins.left + margins.right;
+	var totalHeight = graphHeight + margins.top + margins.bottom;
+
+	var scale = d3.scale.linear()
+		      .domain([-maxExtent, maxExtent])
+		      .range([0, graphWidth]);
+
+	var svg = d3.select('body')
+		    .append('svg')
+		    .attr('width', totalWidth)
+		    .attr('height', totalHeight);
+
+
+	var yGridlinesAxis = d3.svg.axis().scale(scale).orient("left");
+	var yGridlineNodes = svg.append('g')
+				.attr('transform', 'translate(' + (margins.left + graphWidth)
+						 + ',' + margins.top + ')')
+				.call(yGridlinesAxis
+				  .tickSize(graphWidth + axisPadding, 0, 0)
+				  .tickFormat(""));
+	styleGridlineNodes(yGridlineNodes);
+
+	var xGridlinesAxis = d3.svg.axis().scale(scale).orient("bottom");
+	var xGridlineNodes = svg.append('g')
+				.attr('transform', 'translate(' + margins.left + ',' +
+						    (totalHeight - margins.bottom + axisPadding) + ')')
+				.call(xGridlinesAxis
+				  .tickSize(-graphWidth - axisPadding, 0, 0)
+				  .tickFormat(""));
+	styleGridlineNodes(xGridlineNodes);
+
+	
+	var graphGroup = svg.append('g')
+			    .attr('transform' , 'translate(' + margins.left + ',' + margins.top + ')');
+	
+	graphGroup.selectAll('circle')
+		  .data(data)
+		  .enter()
+		  .append('circle')
+		  .attr({
+		    cx: function(d) { return scale(d.X); },
+		    cy: function(d) { return scale(d.Y); },
+		    r: radius,
+		    fill: 'none',
+		    stroke: 'steelblue'
+		  });
+*/
+	
+	
+	function styleAxisNodes(axisNodes) {
+	  axisNodes.selectAll('.domain')
+		   .attr({
+		     fill: 'none',
+		     'stroke-width': 1,
+		     stroke: 'black'
+		   });
+	  axisNodes.selectAll('.tick line')
+		   .attr({
+		     fill: 'none',
+		     'stroke-width': 1,
+		     stroke: 'black'
+		   });
+	}
+	
+      }); // closing the call to d3.csv
+
+    </script>
+  </body>
+</html>

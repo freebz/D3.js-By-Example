@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 6.2">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var url = "corr_aapl_msft.csv";
+      d3.csv(url, function (error, rawData) {
+
+	var data = rawData.map(function(d) {
+	  return { X: +d.AAPL, Y: +d.MSFT }
+	});
+
+	var xExtents = d3.extent(data, function(d) { return d.X; });
+	var yExtents = d3.extent(data, function(d) { return d.Y; });
+
+	var maxExtent = d3.max(
+	  xExtents.concat(yExtents),
+	  function(d) { return Math.abs(d);
+	  });
+
+	var graphWidth = 400, graphHeight = 400;
+	var radius = 5;
+
+	var scale = d3.scale.linear()
+		      .domain([-maxExtent, maxExtent])
+		      .range([0, graphWidth]);
+
+	var svg = d3.select('body')
+		    .append('svg')
+		    .attr('width', graphWidth)
+		    .attr('height', graphHeight);
+
+	
+	var graphGroup = svg.append('g');
+	graphGroup.selectAll('circle')
+		  .data(data)
+		  .enter()
+		  .append('circle')
+		  .attr({
+		    cx: function(d) { return scale(d.X); },
+		    cy: function(d) { return scale(d.Y); },
+		    r: radius,
+		    fill: 'none',
+		    stroke: 'steelblue'
+		  });
+	
+      }); // closing the call to d3.csv
+
+    </script>
+  </body>
+</html>
