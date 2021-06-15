@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 7.1">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 200
+		  });
+      
+      svg.append('rect')
+	 .attr({
+	   x: '10px',
+	   y: '10px',
+	   width: 80,
+	   height: 80,
+	   fill: 'red'
+	 })
+	 .transition()
+	 .duration(5000)
+	 .attr({ fill: 'blue' });
+      
+    </script>
+  </body>
+</html>

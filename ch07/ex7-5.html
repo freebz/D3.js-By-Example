@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 7.5">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 200
+		  });
+      
+      svg.append('rect')
+	 .attr({
+	   x: 10,
+	   y: 10,
+	   width: 80,
+	   height: 80,
+	   fill: 'red'
+	 })
+	 .transition()
+	 .delay(1000)
+	 .duration(2000)
+	 .attr({
+	   x: 240,
+	   y: 60,
+	   width: 60,
+	   height: 60,
+	   fill: 'purple'
+	 })
+	 .transition()
+	 .duration(2000)
+	 .attr({
+	   width: 40,
+	   height: 40,
+	   x: 460,
+	   y: 10,
+	   fill: 'blue'
+	 })
+	 .each('start', function() {
+	   d3.select(this).attr({ fill: 'green' });
+	 })
+	 .each('end', function() {
+	   d3.select(this).attr({ fill: 'yellow' });
+	 });
+      
+    </script>
+  </body>
+</html>

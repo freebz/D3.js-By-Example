@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 7.6">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 200
+		  });
+
+      svg.append('text')
+	 .attr({ x: 10, y: 50 })
+	 .transition()
+	 .duration(10000)
+	 .tween("mytween", function () {
+	   return function(t) {
+	     this.textContent = d3.interpolateRound(0, 10)(t);
+	   }
+	 });
+      
+    </script>
+  </body>
+</html>
