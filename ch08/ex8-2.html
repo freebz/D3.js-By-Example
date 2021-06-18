@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 8.2">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 600,
+		    height: 600
+		  });
+      var data = [30, 20, 40], x = 0;
+
+      svg.selectAll('circle')
+	 .data(data)
+	 .enter()
+	 .append('circle')
+	 .attr('fill', 'steelblue')
+	 .each(function(d, i) {
+	   d3.select(this).attr({
+	     cx: x += (d + 5),
+	     cy: 40,
+	     r: d / 2
+	   });
+	 })
+      	 .on('mouseenter', function() {
+	   d3.select(this).attr('fill', 'red');
+	 })
+	 .on('mouseout', function() {
+	   d3.select(this).attr('fill', 'steelblue');
+	 });
+      
+    </script>
+  </body>
+</html>

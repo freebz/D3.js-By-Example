@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 8.1">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 450,
+		    height: 450
+		  });
+      var label = svg.append('text')
+		     .attr('x', 10)
+		     .attr('y', 30);
+
+      svg.on('mousemove', function () {
+	var position = d3.mouse(svg.node());
+	label.text('X=' + position[0] + ' , Y=' + position[1]);
+      });
+      
+    </script>
+  </body>
+</html>

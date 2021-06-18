@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 8.5">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var zoomBehavior = d3.behavior.zoom()
+			   .scaleExtent([0.1, 10])
+			   .on('zoom', onZoom);
+
+      var width = 450, height = 450, radius = 50;      
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: width,
+		    height: height
+		  })
+		  .call(zoomBehavior)
+		  .append('g');
+      
+      var data = [
+	[width / 2 - radius, height / 2 - radius],
+	[width / 2 - radius, height / 2 + radius],
+	[width / 2 + radius, height / 2 - radius],
+	[width / 2 + radius, height / 2 + radius]];
+
+      var colors = d3.scale.category10();
+
+      var circles = svg.selectAll('circle')
+		       .data(data)
+		       .enter()
+		       .append('circle')
+		       .attr({
+			 r: radius,
+			 fill: colors,
+			 transform: function (d) { return 'translate(' + d + ')'}
+		       });
+      
+      var dragBehavior = d3.behavior.drag()
+			   .on('drag', onDrag)
+			   .on('dragstart', function() {
+			     d3.event.sourceEvent.stopPropagation();
+			   });
+      circles.call(dragBehavior);
+
+      function onDrag(a) {
+	var x = d3.event.x,
+	    y = d3.event.y;
+	if ((x >= radius) && (x <= width - radius) &&
+	    (y >= radius) && (y <= height - radius)) {
+	  d3.select(this)
+	    .attr('transform', function () {
+	      return 'translate(' + x + ', ' + y + ')';
+	    });
+	}
+      }
+
+      function onZoom() {
+	console.log(d3.event.translate);
+	console.log(d3.event.scale);
+	svg.attr("transform", "translate(" + d3.event.translate + ")" +
+			      "scale(" + d3.event.scale + ")");
+      }
+      
+    </script>
+  </body>
+</html>
