@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.2">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 250
+		  });
+      
+      var data = d3.range(100)
+		   .map(function(i) {
+		     return Math.random() * 30;
+		   })
+		   .map(function(d, i) {
+		     return { X: i * 10, Y: d }
+		   });
+      
+      var generator = d3.svg.area()
+			.y0(100)
+			.x(function(d) { return d.X; })
+			.y1(function(d) { return d.Y; });
+
+      svg.append('path')
+	 .datum(data)
+	 .attr({
+	   d: generator,
+	   fill: 'yellow',
+	   stroke: 'black'
+	 });      
+    </script>
+  </body>
+</html>

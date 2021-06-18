@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.11">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 1000,
+		    height: 200
+		  });
+
+      var source = { x: 500, y: 50 };
+      var targets = [
+	{ x: 100, y: 150 },
+	{ x: 300, y: 150 },
+	{ x: 500, y: 150 },
+	{ x: 700, y: 150 },
+	{ x: 900, y: 150 }
+      ];
+      
+      var links = targets.map(function (target) {
+	return { source: source, target: target };
+      });
+      
+      svg.selectAll('path')
+	 .data(links)
+	 .enter()
+	 .append('path')
+	 .attr({
+	   d: d3.svg.diagonal(),
+	   fill: 'none',
+	   stroke: '#ccc'
+	 });
+
+      var nodes = targets.concat(source);
+      svg.selectAll('circle')
+	 .data(nodes)
+	 .enter()
+	 .append('circle')
+	 .attr({
+	   r: 20,
+	   cx: function (d) { return d.x; },
+	   cy: function (d) { return d.y; },
+	   fill: 'orange',
+	   stroke: '#333'
+	 });
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.3">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg');
+      
+      var generator = d3.svg.arc()
+			.innerRadius(0)
+			.outerRadius(60)
+			.startAngle(0)
+			.endAngle(Math.PI * 2);
+      
+      svg.append('path')
+	 .attr({
+	   d: generator,
+	   transform: 'translate(65, 65)',
+	   fill: 'cyan',
+	   stroke: 'black'
+	 });      
+    </script>
+  </body>
+</html>

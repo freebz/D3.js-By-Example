@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.12">
+  </head>
+  <body>
+    <form>
+      <select id="interpolations"></select>
+      <select id="tensions"></select>
+      <br />
+
+      <svg id="graph"></svg>
+    </form>
+    
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var width = 400, height = 200, margin = 10;
+
+      var numpoints = 8;
+      var sine = d3.range(0, numpoints + 1).map(
+	function(i) {
+	  return [
+	    (2.0 / numpoints) * i * Math.PI,
+	    Math.sin((2.0 / numpoints) * i * Math.PI)
+	  ];
+	});
+
+      var xScale = d3.scale.linear()
+		     .domain(d3.extent(sine, function(d) {
+		       return d[0];
+		     }))
+		     .range([0, width - margin * 2]);
+      var yScale = d3.scale.linear()
+		     .domain([-1, 1])
+		     .range([height - margin, 0]);
+
+      var interpolations = [
+	"linear",
+	"linear-closed",
+	"step-before",
+	"step-after",
+	"basis",
+	"basis-open",
+	"basis-closed",
+	"cardinal",
+	"cardinal-open",
+	"monotone",
+	"bundle"
+      ];
+
+      d3.select("#interpolations")
+	.on("change", redraw)
+	.selectAll("option")
+	.data(interpolations)
+	.enter()
+	.append("option")
+	.attr("value", function(d) { return d; })
+	.text(function(d) { return d; });
+
+      var tensions = [1.0, 0.75, 0.5, 0.25, 0.0];
+      d3.select("#tensions")
+	.on("change", redraw)
+	.selectAll("option")
+	.data(tensions)
+	.enter()
+	.append("option")
+	.attr("value", function(d) { return d; })
+	.text(function(d) { return d; });
+      
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr('width', width + 2 * margin)
+		  .attr('height', height + 2 * margin);
+
+      var graphGroup = svg.append('g')
+			  .attr('transform', 'translate(' + margin + ', ' +
+					     margin + ')');
+
+      redraw();
+
+      function redraw() {
+	var interpolationSel = document.getElementById('interpolations');
+	var interpolation = interpolationSel.options[
+	  interpolationSel.selectedIndex].value;
+
+	graphGroup.selectAll('path').remove();
+
+	var line = d3.svg.line()
+		     .interpolate(interpolation)
+		     .tension(0.5)
+		     .x(function(d) { return xScale(d[0]); })
+		     .y(function(d) { return yScale(d[1]); });
+	
+	if (interpolation === "bundle") {
+	  var tensionsSel = document.getElementById('tensions');
+	  var tension = tensionsSel.options[
+	    tensionsSel.selectedIndex].value;
+	  line.tension(tension);
+	}
+
+	graphGroup.append('path')
+		  .datum(sine)
+		  .attr({
+		    d: line,
+		    stroke: 'steelblue',
+		    'stroke-width': 2,
+		    fill: 'none'
+		  });
+
+	graphGroup.append("g")
+		  .selectAll("circle")
+		  .data(sine)
+		  .enter()
+		  .append("circle")
+		  .attr({
+		    fill: '#fff',
+		    stroke: 'steelblue',
+		    cx: function(d) { return xScale(d[0]); },
+		    cy: function(d) { return yScale(d[1]); },
+		    r: 4.5
+		  });
+      }
+            
+    </script>
+  </body>
+</html>

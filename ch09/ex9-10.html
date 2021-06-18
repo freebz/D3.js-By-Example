@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.10">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 250
+		  });
+
+      svg.selectAll('path')
+	 .data(d3.svg.symbolTypes)
+	 .enter()
+	 .append('path')
+	 .attr({
+	   d: d3.svg.symbol().type(function (d) { return d; }),
+	   transform: function (d, i) {
+	     return 'translate(' + (i * 20 + 10) + ',10)';
+	   }
+	 });
+            
+    </script>
+  </body>
+</html>

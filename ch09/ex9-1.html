@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 9.1">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: 500,
+		    height: 250
+		  });
+      
+      var data = [
+	{ X: 10, Y: 10 },
+	{ X: 60, Y: 60 },
+	{ X: 80, Y: 20 }
+      ];
+      var generator = d3.svg.line()
+			.x(function(d) { return d.X; })
+			.y(function(d) { return d.Y; });
+
+      svg.append('path')
+	 .datum(data)
+	 .attr({
+	   d: generator,
+	   stroke: 'steelblue'
+	 });
+      svg.append('path')
+	 .datum(data)
+	 .attr({
+	   transform: 'translate(100, 0)',
+	   d: generator,
+	   fill: 'none',
+	   stroke: 'steelblue'
+	 });      
+    </script>
+  </body>
+</html>
