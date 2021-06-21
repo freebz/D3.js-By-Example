@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 10.1">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var url = 'stacked_bars.csv';
+      d3.csv(url, function (error, data) {
+	var keys = d3.keys(data[0])
+		     .filter(function (key) {
+		       return key !== 'State';
+		     });
+
+	var statesAndAges = keys.map(function (ageRange) {
+	  return data.map(function (d) {
+	    return {
+	      x: d.State,
+	      y: +d[ageRange]
+	    };
+	  });
+	});
+
+	var stackedData = d3.layout.stack()(statesAndAges);
+
+	var width = 960, height = 500;
+	var svg = d3.select('body')
+		    .append("svg")
+		    .attr({
+		      width: width,
+		      height: height
+		    });
+
+	var yScale = d3.scale.linear()
+		       .domain([0,
+				d3.max(stackedData, function (d) {
+				  return d3.max(d, function (d) {
+				    return d.y0 + d.y;
+				  });
+				})
+		       ])
+		       .range([0, height]);
+
+	var xScale = d3.scale.ordinal()
+		       .domain(d3.range(stackedData[0].length))
+		       .rangeRoundBands([0, width], 0.05);
+
+	var colors = d3.scale.ordinal()
+		       .range(["#98abc5", "#8a89a6", "#7b6888",
+			       "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+	var groups = svg.selectAll("g")
+			.data(stackedData)
+			.enter()
+			.append("g")
+			.style("fill", function (d, i) {
+			  return colors(i);
+			});
+
+	groups.selectAll("rect")
+	      .data(function (d) { return d; })
+	      .enter()
+	      .append("rect")
+	      .attr("x", function (d, i) {
+		return xScale(i);
+	      })
+	      .attr("y", function (d, i) {
+		return height - yScale(d.y) - yScale(d.y0);
+	      })
+	      .attr("height", function (d) {
+		return yScale(d.y);
+	      })
+	      .attr("width", xScale.rangeBand());
+      });
+      
+    </script>
+  </body>
+</html>

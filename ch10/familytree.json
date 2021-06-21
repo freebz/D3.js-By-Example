@@ -1,0 +1,30 @@
+{
+  "name": "Mike and Marcia",
+  "children": [
+    {
+      "name": "Children",
+      "children": [
+        { "name": "Mikael" }
+      ]
+    },
+    {
+      "name": "Pets",
+      "children": [
+        {
+          "name": "Dogs",
+          "children": [
+            { "name": "Bleu" },
+            { "name": "Tagg" }
+          ]
+        },
+        {
+          "name": "Cats",
+          "children": [
+            { "name": "Bob" },
+            { "name": "Peanut" }
+          ]
+        }
+      ]
+    }
+  ]
+}

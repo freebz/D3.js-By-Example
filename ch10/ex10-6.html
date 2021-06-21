@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 10.6">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var url = 'sales_rollup.json';
+      d3.json(url, function (error, data) {
+	var diameter = 500;
+	
+	var svg = d3.select('body')
+		    .append("svg")
+		    .attr({
+		      width: diameter,
+		      height: diameter
+		    });
+
+	var pack = d3.layout.pack()
+		     .size([diameter, diameter])
+		     .value(function (d) { return d.value; });
+
+	var nodes = svg.datum(data)
+		       .selectAll('g')
+		       .data(pack.nodes)
+		       .enter()
+		       .append('g')
+		       .attr('transform', function (d) {
+			 return 'translate(' + d.x + ',' + d.y + ')';
+		       });
+
+	nodes.append('circle')
+	     .each(function (d) {
+	       d3.select(this)
+		 .attr({
+		   r: d.r,
+		   fill: d.children ? 'rgb(31, 119, 180)' :
+			 '#ff7f0e',
+		   'fill-opacity': d.children ? 0.25 : 1.0,
+		   stroke: d.children ? 'rgb(31, 119, 180)' : 'none'
+		 });
+	     });
+
+	nodes.filter(function(d) {
+	       return !d.children;
+	     })
+	     .append('text')
+	     .attr('dy', '.3em')
+	     .style({
+	       'text-anchor': 'middle',
+	       'font': '10px sans-serif'
+	     })
+	     .text(function(d) {
+	       return d.name.substring(0,d.r / 3);
+	     });
+      });
+            
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{
+"nodes":[
+  {"node":0, "name":"Source 1"},
+  {"node":1, "name":"Source 2"},
+  {"node":2, "name":"First Level Distribution"},
+  {"node":3, "name":"Second Level Distribution 1"},
+  {"node":4, "name":"Terminus 1"},
+  {"node":5, "name":"Terminus 2"},
+  {"node":6, "name":"Second Level Distribution 2"},
+  {"node":7, "name":"Source 3"}
+],
+"links":[
+  {"source":0, "target":2, "value":6},
+  {"source":0, "target":4, "value":2},
+
+  {"source":1, "target":2, "value":4},
+  {"source":1, "target":3, "value":2},
+  {"source":1, "target":6, "value":1},
+  
+  {"source":2, "target":3, "value":5},
+  {"source":2, "target":4, "value":3},
+  {"source":2, "target":6, "value":2},
+  
+  {"source":3, "target":4, "value":4},
+  {"source":3, "target":5, "value":4},
+
+  {"source":6, "target":5, "value":5},
+  {"source":7, "target":6, "value":2},
+  {"source":7, "target":3, "value":1}
+] }
