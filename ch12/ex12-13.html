@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 12.13">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    
+    <script>
+      var width = 1024, height = 728;
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: width,
+		    height: height
+		  });
+      
+      var url = 'world-110m.json';
+      d3.json(url, function (error, world) {
+	var projection = d3.geo.orthographic()
+			   .scale(300)
+			   .clipAngle(90)
+			   .translate([width / 2, height / 2])
+			   .rotate([90, -40]);
+	var path = d3.geo.path().projection(projection);
+	
+	var countries = topojson.feature(world,
+					 world.objects.countries).features;
+	var neighbors = topojson.neighbors(
+	  world.objects.countries.geometries);
+
+	var graticule = d3.geo.graticule();
+	svg.append('path')
+	   .datum(graticule)
+	   .attr('d', path)
+	   .style({
+	     fill: 'none',
+	     stroke: '#777',
+	     'stroke-width': '.5px',
+	     'stroke-opacity': 0.5
+	   });
+	
+	var color = d3.scale.category20();
+	svg.selectAll('.country')
+	   .data(countries)
+	   .enter()
+	   .append('path')
+	   .attr('d', path)
+	   .style('fill', function (d, i) {
+	     return color(d.color = d3.max(neighbors[i],
+					   function (n) {
+					     return countries[n].color;
+					   })
+				  + 1 | 0);
+	   });
+      });
+      
+    </script>
+  </body>
+</html>

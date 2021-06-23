@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 12.4">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    
+    <script>
+      var width = 500, height = 250;
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: width,
+		    height: height
+		  });
+      
+      var url = 'us-states.json';
+      d3.json(url, function (error, data) {
+	var projection = d3.geo.albersUsa()
+			   .translate([width / 2, height / 2]);
+	var path = d3.geo.path()
+		     .projection(projection);
+	svg.selectAll('path')
+	   .data(data.features)
+	   .enter()
+	   .append('path')
+	   .attr('d', path)
+	   .style({ fill: 'none', stroke: 'black' });
+      });
+      
+    </script>
+  </body>
+</html>

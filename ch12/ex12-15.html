@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 12.15">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    
+    <script>
+      var width = 1024, height = 728;
+
+      var zoom = d3.behavior.zoom()
+		   .scaleExtent([1, 5])
+		   .on('zoom', moveAndZoom);
+      
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: width,
+		    height: height
+		  })
+		  .call(zoom);
+      var mainGroup = svg.append('g');
+      mainGroup.style({
+	stroke: 'white',
+	'stroke-width': 2,
+	'stroke-opacity': 0.0
+      });
+      
+      var url = 'world-110m.json';
+      d3.json(url, function (error, world) {
+	var projection = d3.geo.mercator()
+			   .scale((width + 1) / 2 / Math.PI)
+			   .translate([width / 2, height / 2]);
+	var path = d3.geo.path().projection(projection);
+	
+	var countries = topojson.feature(world,
+					 world.objects.countries).features;
+	var neighbors = topojson.neighbors(
+	  world.objects.countries.geometries);
+
+	var color = d3.scale.category20();
+	mainGroup.selectAll('path', 'countries')
+	   .data(countries)
+	   .enter()
+	   .append('path')
+	   .attr('d', path)
+	   .style('fill', function (d, i) {
+	     return color(d.color = d3.max(neighbors[i],
+					   function (n) {
+					     return countries[n].color;
+					   })
+				  + 1 | 0);
+	   });
+
+	mainGroup.selectAll('path')
+		 .on('mouseover', function () {
+		   d3.select(this).style('stroke-opacity', 1.0);
+		 });
+	mainGroup.selectAll('path')
+		 .on('mouseout', function () {
+		   d3.select(this).style('stroke-opacity', 0.0);
+		 });
+      });
+
+      function moveAndZoom() {
+	var t = d3.event.translate;
+	var s = d3.event.scale;
+
+	var x = Math.min(
+	  (width / height) * (s - 1),
+	  Math.max(width * (1 - s), t[0]));
+
+	var h = height / 4;
+	var y = Math.min(
+	  h * (s - 1) + h * s,
+	  Math.max(height * (1 - s) - h * s, t[1]));
+
+	mainGroup.style("stroke-width", ((1 / s) * 2) + "px");
+	mainGroup.attr('transform', 'translate(' + x + ',' + y +
+				    ')scale(' + s + ')');
+      }
+      
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 12.6">
+  </head>
+  <body>
+    <script src="http://d3js.org/d3.v3.min.js"
+	    charset="utf-8"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    
+    <script>
+      var width = 1024, height = 728;
+      var svg = d3.select('body')
+		  .append('svg')
+		  .attr({
+		    width: width,
+		    height: height
+		  });
+      
+      var url = 'world-110m.json';
+      d3.json(url, function (error, world) {
+	var path = d3.geo.path();
+	var countries = topojson.feature(world,
+					 world.objects.countries).features;
+	
+	svg.selectAll('path')
+	   .data(countries)
+	   .enter()
+	   .append('path')
+	   .attr('d', path)
+	   .style({
+	     fill: 'black',
+	     stroke: 'white'
+	   });
+      });
+      
+    </script>
+  </body>
+</html>
