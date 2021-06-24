@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 13.1">
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <script src="app.js"></script>
+    <script src="directives/bars.js"></script>
+    <script src="controllers/basic_dashboard.js"></script>
+
+    <div ng-app="dashboardApp" ng-controller="dashboardController">
+      <bars-view width="500" height="105"></bars-view>
+    </div>
+    
+  </body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="description" content="D3byEx 13.4">
+  </head>
+  <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <script src="app.js"></script>
+    <script src="directives/bars_with_click_and_updates.js"></script>
+    <script src="directives/donut_with_updates.js"></script>
+    <script src="directives/dynamic_details.js"></script>
+    <script src="controllers/enhanced_dashboard.js"></script>
+
+    <div ng-app="dashboardApp" ng-controller="dashboardController">
+      <bars-view width="500" height="105"
+		 style="display: table-cell; vertical-align: middle">
+      </bars-view>
+      <donut-view width="300" height="300"
+		  style="display: table-cell"></donut-view>
+      <details-view data="selectedItem" width="300">
+      </details-view>
+    </div>
+    
+  </body>
+</html>
